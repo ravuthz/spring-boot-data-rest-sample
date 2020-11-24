@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    ## PostgreSQL database
+    url: "jdbc:postgresql://localhost:5432/rest_pos_test"
+    username: adminz
+    password: 123123
+
+    ## Default connection pool
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show_sql: false
+    properties:
+      hibernate:
+        show_sql: ${spring.jpa.show_sql}
+        format_sql: ${spring.jpa.show_sql}
+
+logging:
+  level:
+    root: ERROR
+    com:
+      zaxxer: OFF
+      springframework: INFO
+    org:
+      hibernate:
+        SQL: OFF
+        type:
+          descriptor:
+            sql: OFF
