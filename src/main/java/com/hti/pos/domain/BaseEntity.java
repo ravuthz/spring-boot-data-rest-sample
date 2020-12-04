@@ -18,6 +18,7 @@ import java.util.Date;
 @Getter
 @MappedSuperclass
 public class BaseEntity {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
