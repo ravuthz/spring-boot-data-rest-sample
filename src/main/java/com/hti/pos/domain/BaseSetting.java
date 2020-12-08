@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class BaseSetting extends BaseEntity {
 
     @NotEmpty
-    @Column
+    @Column(unique = true)
     protected String name;
 
     @NotEmpty

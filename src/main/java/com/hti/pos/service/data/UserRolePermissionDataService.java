@@ -1,4 +1,4 @@
-package com.hti.pos.service;
+package com.hti.pos.service.data;
 
 import com.hti.pos.domain.Permission;
 import com.hti.pos.domain.Role;
@@ -20,13 +20,13 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class CustomDataService {
+public class UserRolePermissionDataService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
 
     @Autowired
-    public CustomDataService(UserRepository userRepository, RoleRepository roleRepository, PermissionRepository permissionRepository) {
+    public UserRolePermissionDataService(UserRepository userRepository, RoleRepository roleRepository, PermissionRepository permissionRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.permissionRepository = permissionRepository;
@@ -35,8 +35,7 @@ public class CustomDataService {
     public void assignPermissionsToRole(List<Permission> permissions, String roleName) {
         Role role = roleRepository.findByName(roleName);
         if (role != null) {
-//            role.getPermissions().addAll(permissions);
-            role.getPermissions().forEach(role.getPermissions()::add);
+            role.getPermissions().addAll(permissions);
             roleRepository.save(role);
         }
     }
@@ -46,8 +45,6 @@ public class CustomDataService {
         if (user != null) {
             user.getRoles().add(role);
             userRepository.save(user);
-//            role.getUsers().add(user);
-//            roleRepository.save(role);
         }
     }
 
@@ -86,7 +83,7 @@ public class CustomDataService {
     }
 
     public void generateData() {
-        log.debug("Start generate permissions");
+        log.debug("UserRolePermissionDataService.generateData()");
         Set<Permission> appPermissions = generatePermissions("app", "Application");
         Set<Permission> userPermissions = generatePermissions("user", "User");
         Set<Permission> rolePermissions = generatePermissions("role", "Role");
