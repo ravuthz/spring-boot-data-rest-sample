@@ -7,11 +7,10 @@ import com.hti.pos.repository.PermissionRepository;
 import com.hti.pos.repository.RoleRepository;
 import com.hti.pos.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by ravuthz
@@ -26,6 +25,7 @@ public class CustomDataService {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
 
+    @Autowired
     public CustomDataService(UserRepository userRepository, RoleRepository roleRepository, PermissionRepository permissionRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -35,7 +35,8 @@ public class CustomDataService {
     public void assignPermissionsToRole(List<Permission> permissions, String roleName) {
         Role role = roleRepository.findByName(roleName);
         if (role != null) {
-            permissions.forEach(role.getPermissions()::add);
+//            role.getPermissions().addAll(permissions);
+            role.getPermissions().forEach(role.getPermissions()::add);
             roleRepository.save(role);
         }
     }
@@ -45,34 +46,51 @@ public class CustomDataService {
         if (user != null) {
             user.getRoles().add(role);
             userRepository.save(user);
-            role.getUsers().add(user);
-            roleRepository.save(role);
+//            role.getUsers().add(user);
+//            roleRepository.save(role);
         }
     }
 
-    public List<Permission> generatePermissions(String code, String name) {
+    public Set<Permission> generatePermissions(String code, String name) {
         code = code.toUpperCase();
-        List<Permission> permissions = Arrays.asList(
-                new Permission("SHOW_" + code, "Can show " + name),
-                new Permission("LIST_" + code, "Can list " + name),
-                new Permission("CREATE_" + code, "Can create " + name),
-                new Permission("UPDATE_" + code, "Can update " + name),
-                new Permission("DELETE_" + code, "Can delete " + name)
-        );
-        permissionRepository.saveAll(permissions);
-        return permissions;
+        List<Permission> permissions = permissionRepository.findAllByNameIgnoreCaseEndingWith(code);
+        if (permissions.isEmpty()) {
+            permissions = Arrays.asList(
+                    new Permission("SHOW_" + code, "Can show " + name),
+                    new Permission("LIST_" + code, "Can list " + name),
+                    new Permission("CREATE_" + code, "Can create " + name),
+                    new Permission("UPDATE_" + code, "Can update " + name),
+                    new Permission("DELETE_" + code, "Can delete " + name)
+            );
+            permissionRepository.saveAll(permissions);
+        }
+        return new HashSet<Permission>(permissions);
     }
 
     public Role generateRole(String name) {
-        return roleRepository.save(new Role(name, "Role as " + name));
+        Role role = roleRepository.findByName(name);
+        if (role == null) {
+            role = new Role(name, "Role as " + name);
+            role = roleRepository.save(role);
+        }
+        return role;
+    }
+
+    public User generateUser(String firstName, String lastName) {
+        User user = userRepository.findByUsername(firstName);
+        if (user == null) {
+            user = User.staticUser(firstName, lastName);
+            userRepository.save(user);
+        }
+        return user;
     }
 
     public void generateData() {
         log.debug("Start generate permissions");
-        List<Permission> appPermissions = generatePermissions("app", "Application");
-        List<Permission> userPermissions = generatePermissions("user", "User");
-        List<Permission> rolePermissions = generatePermissions("role", "Role");
-        List<Permission> permPermissions = generatePermissions("perm", "Permission");
+        Set<Permission> appPermissions = generatePermissions("app", "Application");
+        Set<Permission> userPermissions = generatePermissions("user", "User");
+        Set<Permission> rolePermissions = generatePermissions("role", "Role");
+        Set<Permission> permPermissions = generatePermissions("perm", "Permission");
 
         log.debug("Start generate roles");
         Role userRole = generateRole("user");
@@ -81,9 +99,9 @@ public class CustomDataService {
 
         log.debug("Start generate users");
         userRepository.saveAll(Arrays.asList(
-                User.staticUser("user", "account"),
-                User.staticUser("admin", "account"),
-                User.staticUser("editor", "account")
+                generateUser("user", "account"),
+                generateUser("admin", "account"),
+                generateUser("editor", "account")
         ));
 
         List<Permission> showOnlyPermissions = permissionRepository.findAllByNameIgnoreCaseStartingWith("SHOW_");

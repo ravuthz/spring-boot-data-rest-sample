@@ -10,8 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by ravuthz
@@ -35,6 +35,7 @@ public class User extends BaseEntity implements Serializable {
     private String email;
 
     @NotEmpty
+    @Column(unique = true, nullable = false)
     private String username;
 
     @NotEmpty
@@ -51,12 +52,11 @@ public class User extends BaseEntity implements Serializable {
 
     private Integer failedLoginAttempts = 0;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "userRole",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "roleId"))
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
     public User(User user) {
         this.email = user.email;

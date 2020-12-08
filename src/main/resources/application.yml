@@ -14,7 +14,12 @@ spring:
       maximumPoolSize: 5
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        enable_lazy_load_no_trans: true
   data:
     rest:
       basePath: /api

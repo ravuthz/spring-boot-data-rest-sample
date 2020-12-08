@@ -3,8 +3,15 @@ package com.hti.pos.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -17,26 +24,35 @@ import java.util.Date;
 @Setter
 @Getter
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable {
+
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-    @JsonIgnore
-    private Date dateCreated;
+//    @CreatedDate
+    private Date createdAt;
 
-    @JsonIgnore
-    private Date lastUpdated;
+//    @LastModifiedDate
+    private Date updatedAt;
+
+//    @CreatedBy
+    private String createdBy;
+
+//    @LastModifiedBy
+    private String updatedBy;
 
     @PreUpdate
     @PrePersist
-    public void updateTimeStamps() {
-        lastUpdated = new Date();
-        if (dateCreated == null) {
-            dateCreated = new Date();
+    public void updateAuditFields() {
+        updatedAt = new Date();
+        if (createdAt == null) {
+            createdAt = new Date();
         }
+
+        // TODO: Update Audit User here ...
     }
 }
 

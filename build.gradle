@@ -24,6 +24,8 @@ dependencies {
 	implementation "io.springfox:springfox-swagger-ui:3.0.0"
 	implementation "io.springfox:springfox-bean-validators:3.0.0"
 
+	implementation 'commons-httpclient:commons-httpclient:3.1'
+
 	runtimeOnly 'org.postgresql:postgresql'
 	compileOnly 'org.projectlombok:lombok'
 	implementation 'org.projectlombok:lombok'

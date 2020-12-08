@@ -8,15 +8,14 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
  * Created by ravuthz
  * Date : 11/23/2020, 1:49 PM
- * Email : ravuthz@gmail.com, yovannaravuth@gmail.com
+ * Email : ravuthz@gmail.com,
+ * yovannaravuth@gmail.com
  */
 @Setter
 @Getter
@@ -29,14 +28,15 @@ public class Role extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -5403723535622562579L;
 
     @NotEmpty
+    @Column(unique = true)
     private String name;
 
     private String note;
 
     @ManyToMany(mappedBy = "roles")
-    private List<User> users = new ArrayList<>();
+    private Set<User> users = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "rolePermission",
             joinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id", nullable = false, updatable = false),
             inverseJoinColumns = @JoinColumn(name = "permissionId", referencedColumnName = "id", nullable = false, updatable = false))

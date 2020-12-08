@@ -12,12 +12,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-    show_sql: false
     properties:
       hibernate:
-        show_sql: ${spring.jpa.show_sql}
-        format_sql: ${spring.jpa.show_sql}
-
+        show_sql: true
+        format_sql: true
+        enable_lazy_load_no_trans: true
 logging:
   level:
     root: ERROR
@@ -30,3 +29,4 @@ logging:
         type:
           descriptor:
             sql: OFF
+

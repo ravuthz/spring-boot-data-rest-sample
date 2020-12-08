@@ -16,4 +16,5 @@ import java.util.List;
 public interface PermissionRepository extends PagingAndSortingRepository<Permission, Long> {
     Permission findByName(String permission);
     List<Permission> findAllByNameIgnoreCaseStartingWith(String text);
+    List<Permission> findAllByNameIgnoreCaseEndingWith(String text);
 }
