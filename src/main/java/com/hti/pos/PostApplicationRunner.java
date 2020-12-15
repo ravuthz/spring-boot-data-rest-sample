@@ -27,7 +27,7 @@ public class PostApplicationRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         log.debug("PostApplicationRunner.run()");
-        userRolePermissionDataService.generateData();
-        settingSettingItemDataService.generateData();
+//        userRolePermissionDataService.generateData();
+//        settingSettingItemDataService.generateData();
     }
 }

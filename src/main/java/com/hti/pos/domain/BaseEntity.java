@@ -3,12 +3,12 @@ package com.hti.pos.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,35 +24,46 @@ import java.util.Date;
 @Setter
 @Getter
 @MappedSuperclass
+//@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity implements Serializable {
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
-//    @CreatedDate
+    @Version
+    private long version;
+
+    @CreatedDate
     private Date createdAt;
 
-//    @LastModifiedDate
+    @LastModifiedDate
     private Date updatedAt;
 
-//    @CreatedBy
+    @CreatedBy
     private String createdBy;
 
-//    @LastModifiedBy
+    @LastModifiedBy
     private String updatedBy;
 
     @PreUpdate
     @PrePersist
     public void updateAuditFields() {
         updatedAt = new Date();
+        updatedBy = getUsernameOfAuthenticatedUser("system");
         if (createdAt == null) {
             createdAt = new Date();
+            createdBy = getUsernameOfAuthenticatedUser("system");
         }
+    }
 
-        // TODO: Update Audit User here ...
+    public String getUsernameOfAuthenticatedUser(String defaultUsername) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return defaultUsername;
+        }
+        return ((User) authentication.getPrincipal()).getUsername();
     }
 }
 

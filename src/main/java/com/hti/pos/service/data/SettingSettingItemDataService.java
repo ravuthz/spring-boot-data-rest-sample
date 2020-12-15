@@ -4,10 +4,14 @@ import com.hti.pos.domain.Setting;
 import com.hti.pos.domain.SettingItem;
 import com.hti.pos.repository.SettingItemRepository;
 import com.hti.pos.repository.SettingRepository;
+import com.hti.pos.specification.SearchCriteria;
+import com.hti.pos.specification.SearchOperation;
+import com.hti.pos.specification.SearchSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.JoinType;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,8 +41,13 @@ public class SettingSettingItemDataService {
         if (item == null) {
             item = new SettingItem(name, value, description);
             item.setSetting(setting);
+            settingItemRepository.save(item);
         }
         return item;
+    }
+
+    public SettingItem newOrUpdateItem(String name, String value, String description) {
+        return newOrUpdateItem(name, value, description, null);
     }
 
     public void generateData() {
@@ -51,9 +60,23 @@ public class SettingSettingItemDataService {
         SettingItem item3 = newOrUpdateItem("Phone", "0964577770", "Set phone number for website", setting1);
 
         List<SettingItem> items = Arrays.asList(item1, item2, item3);
-        settingItemRepository.saveAll(items);
+//        settingItemRepository.saveAll(items);
 
-        setting1.getItems().addAll(items);
-        settingRepository.save(setting1);
+//        setting1.getItems().addAll(items);
+//        settingRepository.save(setting1);
+
+
+        SearchSpecification<SettingItem> searchSpecification = new SearchSpecification<>();
+        searchSpecification.add(new SearchCriteria("name", "title", SearchOperation.MATCH));
+        searchSpecification.add(new SearchCriteria("value", "pos", SearchOperation.MATCH));
+
+        settingItemRepository.findAll(searchSpecification)
+                .forEach(item -> System.out.println("Found item: " + item));
+
+        settingRepository.findAll((root, query, criteriaBuilder) -> {
+            return criteriaBuilder.equal(root.join("items", JoinType.INNER).get("name"), "item-21");
+        }).forEach(item -> {
+            System.out.println("Search found item: " + item);
+        });
     }
 }

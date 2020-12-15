@@ -1,9 +1,6 @@
 package com.hti.pos.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,11 +18,16 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "settings")
 public class Setting extends BaseSetting {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "setting", orphanRemoval = true)
     private List<SettingItem> items = new ArrayList<>();
+
+    public Setting(String name, String description) {
+        this.init(name, null, description);
+    }
 
     public Setting(String name, String thumbnail, String description) {
         this.init(name, thumbnail, description);
