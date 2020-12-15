@@ -2,12 +2,21 @@ server:
   servlet:
     context-path: /
   port: ${PORT:9999}
+
 spring:
+  devtools:
+    restart:
+      exclude: "static/**,public/**"
+    add-properties: true
+  banner:
+    location: "classpath:${spring.profiles.active}.banner.txt"
+  profiles:
+    active: ravuthz
   datasource:
     ## PostgreSQL database
-    url: "jdbc:postgresql://localhost:5432/rest_pos"
-    username: adminz
-    password: 123123
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: postgres
+    password: postgres
     ## Default connection pool
     hikari:
       connectionTimeout: 20000
@@ -17,14 +26,27 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        show_sql: true
-        format_sql: true
+        show_sql: false
+        format_sql: false
         enable_lazy_load_no_trans: true
   data:
+    web:
+      pageable:
+        one-indexed-parameters: true
     rest:
       basePath: /api
+  mvc:
+    log-request-details: true
+  security:
+    user:
+      name: adminz
+      password: 123123
+      roles: admin
 logging:
   level:
+    org:
+      springframework:
+        web: DEBUG
     root: ERROR
     web: DEBUG
     com:
@@ -37,11 +59,11 @@ swagger:
     contactEmail: ravuthz@gmail.com
     contactName: ravuthz@gmail.com
     contactUrl: http://github.com/ravuthz/user-management-api
-    description: Users Management REST API with Spring Boot + Spring Data JPA + Spring Data REST + Spring Security + Spring Security JWT + Spring Security OAUTH 2.
+    description: POS System REST API with Spring Boot + Spring Data JPA + Spring Data REST.
     license: Apache 2.0
     licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
     termOfServiceUrl: http://swagger.io/terms/
-    title: User Management API
+    title: POS System
     version: 1.0.0
   defaultKey:
     page: page

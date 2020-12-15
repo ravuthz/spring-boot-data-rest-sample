@@ -21,6 +21,8 @@ logging:
   level:
     root: ERROR
     com:
+      hti:
+        pos: DEBUG
       zaxxer: OFF
       springframework: INFO
     org:
@@ -29,4 +31,6 @@ logging:
         type:
           descriptor:
             sql: OFF
+  file:
+    path: ./logs
 
