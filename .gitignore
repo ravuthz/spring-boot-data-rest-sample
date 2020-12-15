@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Spring Boot
+application-dev.properties
+**/application-dev.properties
+
+logs
+**/logs
