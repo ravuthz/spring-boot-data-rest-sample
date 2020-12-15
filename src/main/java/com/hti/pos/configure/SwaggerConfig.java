@@ -114,11 +114,11 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
 //                .paths(PathSelectors.regex("(?!/error.*).*"))
                 .build()
-                .globalResponses(HttpMethod.GET, responseList)
-                .globalResponses(HttpMethod.PUT, responseList)
-                .globalResponses(HttpMethod.POST, responseList)
-                .globalResponses(HttpMethod.PATCH, responseList)
-                .globalRequestParameters(parameterList)
+//                .globalResponses(HttpMethod.GET, responseList)
+//                .globalResponses(HttpMethod.PUT, responseList)
+//                .globalResponses(HttpMethod.POST, responseList)
+//                .globalResponses(HttpMethod.PATCH, responseList)
+//                .globalRequestParameters(parameterList)
 //                .securityContexts(Lists.newArrayList(securityContext()))
 //                .securitySchemes(Collections.singletonList(securitySchema()))
                 .apiInfo(apiInfoBuilder())
@@ -157,8 +157,12 @@ public class SwaggerConfig {
                                 m.referenceModel(ref ->
                                         ref.key(k ->
                                                 k.qualifiedModelName(q ->
-                                                        q.namespace("some:namespace")
-                                                                .name("ERROR"))))))
+                                                        q.namespace("org.springframework.boot.autoconfigure.web.servlet.error").name("BasicErrorController")
+                                                )
+                                        )
+                                )
+                        )
+                )
                 .build();
     }
 
