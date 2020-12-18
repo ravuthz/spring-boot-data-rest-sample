@@ -37,8 +37,11 @@ out/
 .vscode/
 
 ### Spring Boot
-application-dev.properties
-**/application-dev.properties
+application-dev.yml
+**/application-dev.yml
+
+application-test.yml
+**/application-test.yml
 
 logs
 **/logs

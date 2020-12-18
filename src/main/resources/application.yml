@@ -2,7 +2,6 @@ server:
   servlet:
     context-path: /
   port: ${PORT:9999}
-
 spring:
   devtools:
     restart:
@@ -11,13 +10,11 @@ spring:
   banner:
     location: "classpath:${spring.profiles.active}.banner.txt"
   profiles:
-    active: ravuthz
+    active: dev
   datasource:
-    ## PostgreSQL database
     url: "jdbc:postgresql://localhost:5432/postgres"
     username: postgres
     password: postgres
-    ## Default connection pool
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5

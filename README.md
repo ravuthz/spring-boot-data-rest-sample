@@ -1,5 +1,11 @@
 # POS System
 
+#### Build & Start Server
+```bash
+gradlew build -x test
+gradlew bootRun
+```
+
 #### API URL
 http://localhost:9999/api/
 
