@@ -6,6 +6,23 @@ gradlew build -x test
 gradlew bootRun
 ```
 
+#### Docker in Gradle
+```bash
+gradlew docker --info
+gradlew dockerRun --info
+gradlew dockerStop --info
+
+gradlew dockerStop docker dockerRun --info
+```
+
+#### DockerCompose in Gradle
+```bash
+gradlew dockerComposeUp --info
+gradlew dockerComposeDown --info
+
+gradlew dockerComposeDown dockerComposeUp --info
+```
+
 #### API URL
 http://localhost:9999/api/
 

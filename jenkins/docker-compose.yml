@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  app:
+    build: .
+#    privileged: true
+#    user: root
+    ports:
+      - '9999:8080'
+    container_name: myjenkins
+#    volumes:
+#      - ./home:/var/jenkins_home
+#      - ./logs:/var/log/jenkins
+#    environment:
+#      - JAVA_OPTS="-Xmx2048m"
+#      - JENKINS_OPTS="--handlerCountMax=200"
