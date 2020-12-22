@@ -1,7 +1,6 @@
 # POS System
 
 ### Using Techology
-```bash
 - Generate by: [Spring Initialzer](https://start.spring.io/) with [Gradle build tool](https://gradle.org)
 - Java Framework: [Spring boot version 1.5.6.RELEASE](https://projects.spring.io/spring-boot/)
 - Database: [Hibernate](http://hibernate.org/) with [PostgreSQL](https://www.postgresql.org/)
@@ -13,7 +12,7 @@
     + [Springfox Swagger UI 2 (v3.0.0)](https://springfox.github.io/springfox/docs/current/#springfox-swagger-ui)
     + [Springfox Swagger Data REST (v3.0.0)](https://springfox.github.io/springfox/docs/current/#gradle-2)
 - IDE: [Idea IntelliJ 2020.1](https://www.jetbrains.com/idea/whatsnew/#2020-1)
-```
+
 
 ### SetUp, Build & Start Development Server
 ```bash
