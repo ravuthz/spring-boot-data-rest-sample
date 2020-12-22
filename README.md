@@ -1,4 +1,4 @@
-# POS System
+# Configure System
 
 ### Using Techology
 - Generate by: [Spring Initialzer](https://start.spring.io/) with [Gradle build tool](https://gradle.org)
