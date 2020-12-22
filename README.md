@@ -19,8 +19,8 @@
 git clone https://github.com/ravuthz/spring-boot-data-rest-sample.git
 
 cd spring-boot-data-rest-sample
-gradle build -x test
-gradle bootRun
+./gradlew build -x test
+./gradlew bootRun
 ```
 
 ### Start Server End Points
